@@ -3,9 +3,10 @@
 include '../cors.php';
 // Include database configuration and connection
 include '../config/db.php';
+session_start();
 
 
-if ($_SERVER['REQUEST_METHOD'] === "GET") {
+if ($_SERVER['REQUEST_METHOD'] === "GET" && $_SESSION['role'] === "admin") {
     try {
         $stmt = $pdo->query("SELECT COUNT(*) FROM Products");
         $totalNumberofProducts = $stmt->fetchColumn();

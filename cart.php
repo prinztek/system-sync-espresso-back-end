@@ -67,19 +67,28 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'DELETE':
         parse_str(file_get_contents("php://input"), $data);
 
-        if (!isset($data['product_id'], $data['size_id'])) {
-            http_response_code(400);
-            echo json_encode(["error" => "Missing product_id or size_id"]);
-            exit;
+        // Check if product_id and size_id are provided (for removing a specific item)
+        if (isset($data['product_id'], $data['size_id'])) {
+            // Remove specific item from the cart
+            $_SESSION['cart'] = array_values(array_filter($_SESSION['cart'], function ($item) use ($data) {
+                return !(
+                    $item['product_id'] === (int)$data['product_id'] &&
+                    $item['size_id'] === (int)$data['size_id']
+                );
+            }));
+
+            echo json_encode(["success" => true, "cart" => $_SESSION['cart']]);
+            break;
         }
 
-        $_SESSION['cart'] = array_values(array_filter($_SESSION['cart'], function ($item) use ($data) {
-            return !(
-                $item['product_id'] === (int)$data['product_id'] &&
-                $item['size_id'] === (int)$data['size_id']
-            );
-        }));
+        // If no product_id and size_id are provided, clear the entire cart
+        if (!isset($data['product_id'], $data['size_id'])) {
+            // Clear the cart by resetting the session cart
+            $_SESSION['cart'] = [];
 
-        echo json_encode(["success" => true, "cart" => $_SESSION['cart']]);
+            echo json_encode(["success" => true, "cart" => $_SESSION['cart']]);
+            break;
+        }
+
         break;
 }
