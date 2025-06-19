@@ -5,7 +5,7 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
     try {
-        // Get the 5 most recent orders
+        // Get 5 recent orders
         $stmt = $pdo->query("SELECT * FROM orders ORDER BY created_at DESC LIMIT 5");
         $ordersRaw = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

@@ -8,11 +8,11 @@ if (!isset($_SESSION['cart'])) {
 }
 
 switch ($_SERVER['REQUEST_METHOD']) {
-    case 'GET':
+    case 'GET': // get cart
         echo json_encode($_SESSION['cart']);
         break;
 
-    case 'POST':
+    case 'POST': // add product to cart
         $data = json_decode(file_get_contents("php://input"), true);
 
         $productId = $data['product_id'];
@@ -45,7 +45,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo json_encode(["success" => true]);
         break;
 
-    case 'PUT':
+    case 'PUT': // update product quantity in cart
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($data['product_id'], $data['size_id'], $data['quantity'])) {
@@ -64,10 +64,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo json_encode(["success" => true, "cart" => $_SESSION['cart']]);
         break;
 
-    case 'DELETE':
+    case 'DELETE': // remove product from cart
         parse_str(file_get_contents("php://input"), $data);
 
-        // Check if product_id and size_id are provided (for removing a specific item)
+        // Check if product_id and size_id are provided (for removing a product)
         if (isset($data['product_id'], $data['size_id'])) {
             // Remove specific item from the cart
             $_SESSION['cart'] = array_values(array_filter($_SESSION['cart'], function ($item) use ($data) {
@@ -81,10 +81,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
             break;
         }
 
-        // If no product_id and size_id are provided, clear the entire cart
+        // If no product_id and size_id are provided = clear cart
         if (!isset($data['product_id'], $data['size_id'])) {
-            // Clear the cart by resetting the session cart
-            $_SESSION['cart'] = [];
+
+            $_SESSION['cart'] = []; // Clear the cart by resetting the session cart
 
             echo json_encode(["success" => true, "cart" => $_SESSION['cart']]);
             break;

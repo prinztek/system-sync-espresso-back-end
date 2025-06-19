@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_SESSION['role']) && $_SESSIO
         foreach ($ordersRaw as $order) {
             $orderId = $order['id'];
 
-            // Get items for each order with product name, size, quantity, and price
+            // Get items for this order
             $itemsStmt = $pdo->prepare("
             SELECT 
                 oi.product_id,

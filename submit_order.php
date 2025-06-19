@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
     $address = $formData['address'] ?? '';
     $cart = $data['cartItems'] ?? [];
 
-    $pdo->beginTransaction();
+    $pdo->beginTransaction(); // use transactions to ensure data integrity
 
     try {
         $totalPrice = 0;
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
         // insert into orders
         $orderStmt = $pdo->prepare("INSERT INTO orders (user_id, customer_name, customer_address, total_price) VALUES (?, ?, ?, ?)");
 
-        // We'll insert total_price after calculating it, so delay this for now
+        // insert total_price after calculating it
 
         // First calculate total and gather detailed info
         foreach ($cart as $item) {

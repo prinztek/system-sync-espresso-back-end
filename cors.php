@@ -1,7 +1,7 @@
 <?php
 // Set CORS headers for all requests
 
-$allowedOrigin = 'http://localhost:5173';  // Change this to your frontend URL
+$allowedOrigin = 'http://localhost:5173';
 
 // Set CORS headers
 header("Access-Control-Allow-Origin: $allowedOrigin");

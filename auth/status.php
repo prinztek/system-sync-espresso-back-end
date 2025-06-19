@@ -1,8 +1,6 @@
 <?php
 
-// Include CORS headers to allow cross-origin requests
 include '../cors.php';
-// Include database configuration and connection
 include '../config/db.php';
 
 
@@ -15,15 +13,14 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
         'status' => 'success',
         'loggedIn' => true,
         'user' => [
-            'id' => $_SESSION['user_id'],  // Session user ID
-            'username' => $_SESSION['username'],  // Session username
-            'email' => $_SESSION['email'],  // Session email (assuming it's stored)
-            'created_at' => $_SESSION['created_at'],  // Session creation date (if stored)
-            'role' => $_SESSION['role'] ?? 'user', // ✅ Add this line
+            'id' => $_SESSION['user_id'],
+            'username' => $_SESSION['username'],
+            'email' => $_SESSION['email'],
+            'created_at' => $_SESSION['created_at'],
+            'role' => $_SESSION['role'] ?? 'user',
         ]
     ]);
 } else {
-    // If session is not valid or expired, return error status
     echo json_encode([
         'status' => 'error',
         'message' => 'No active session found',

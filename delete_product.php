@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['role']) && $_SESSI
         exit;
     }
 
+    // set the available field to 0 (soft delete)
     try {
         $stmt = $pdo->prepare("UPDATE products SET available = 0 WHERE id = ?");
         $stmt->execute([$productId]);

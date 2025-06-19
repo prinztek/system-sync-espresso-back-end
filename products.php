@@ -3,6 +3,7 @@ include './cors.php';
 include './config/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    // get products for users
     try {
         $stmt = $pdo->query("
             SELECT 

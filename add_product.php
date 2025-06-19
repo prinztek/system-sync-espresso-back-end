@@ -4,15 +4,14 @@ include './config/db.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
-    // Get values from POST
     $name = $_POST['name'] ?? '';
     $description = $_POST['description'] ?? '';
-    $type = $_POST['type'] ?? ''; // Should be 'Drink' or 'Food' (capitalized)
+    $type = $_POST['type'] ?? '';
     $ingredients = $_POST['ingredients'] ?? '';
-    $available = isset($_POST['available']) ? (int)$_POST['available'] : 0;
+    $available = isset($_POST['available']) ? (int)$_POST['available'] : 0; // 0 = false, 1 = true
     $stock_quantity = isset($_POST['stock_quantity']) ? (int)$_POST['stock_quantity'] : 0;
 
-    // Sizes are sent as JSON string
+    // JSON string Sizes 
     $sizes = isset($_POST['sizes']) ? json_decode($_POST['sizes'], true) : [];
 
     try {
