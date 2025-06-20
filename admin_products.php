@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_SESSION['role']) && $_SESSIO
                 p.ingredients,
                 p.image_url,
                 p.available,
+                p.stock_quantity,
                 s.id AS size_id,                      
                 s.name AS size_name,
                 ps.price
@@ -38,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_SESSION['role']) && $_SESSIO
                     'ingredients' => array_map('trim', explode(',', $row['ingredients'])),
                     'image_url' => $row['image_url'],
                     'available' => (bool)$row['available'],
+                    'stock_quantity' => (int)$row['stock_quantity'],
                     'sizes' => [],
                 ];
             }

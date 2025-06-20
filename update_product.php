@@ -13,10 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['role']) && $_SESSI
     $ingredients = implode(",", array_map('trim', $data['ingredients']));
     $image_url = $data['image_url'];
     $available = intval($data['available']);
+    $stock_quantity = intval($data['stock_quantity']);
 
     // Update product info
-    $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, type=?, ingredients=?, image_url=?, available=? WHERE id=?");
-    $stmt->execute([$name, $description, $type, $ingredients, $image_url, $available, $product_id]);
+    $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, type=?, ingredients=?, image_url=?, available=?, stock_quantity=? WHERE id=?");
+    $stmt->execute([$name, $description, $type, $ingredients, $image_url, $available, $stock_quantity, $product_id]);
 
     // Update each size price
     foreach ($data['sizes'] as $size) {

@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 p.ingredients,
                 p.image_url,
                 p.available,
+                p.stock_quantity,
                 s.id AS size_id,                      
                 s.name AS size_name,
                 ps.price
@@ -21,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             JOIN product_sizes ps ON p.id = ps.product_id
             JOIN sizes s ON ps.size_id = s.id
             WHERE p.available = 1
+                AND (p.stock_quantity > 0 OR p.stock_quantity IS NULL)
             ORDER BY p.id, s.id
         ");
 
@@ -39,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     'ingredients' => array_map('trim', explode(',', $row['ingredients'])),
                     'image_url' => $row['image_url'],
                     'available' => (bool)$row['available'],
+                    'stock_quantity' => (int)$row['stock_quantity'],
                     'sizes' => [],
                 ];
             }

@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
 
             // Get product name, size name, and price in one query
             $stmt = $pdo->prepare("
-                SELECT p.name AS product_name, s.name AS size_name, ps.price
+                SELECT p.name AS product_name, p.type, s.name AS size_name, p.stock_quantity, ps.price
                 FROM product_sizes ps
                 JOIN products p ON ps.product_id = p.id
                 JOIN sizes s ON ps.size_id = s.id
@@ -53,7 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
                 'size_id' => $size_id,
                 'size_name' => $result['size_name'],
                 'quantity' => $quantity,
+                'stock_quantity' => $result['stock_quantity'],
                 'price' => $result['price'],
+                'type' => $result['type'],
                 'total' => $itemTotal
             ];
         }
@@ -78,6 +80,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
                 $item['price']
             ]);
         }
+
+        // Update stock quantities
+        $stockStmt = $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity - ? WHERE id = ? AND stock_quantity >= ?");
+
+        foreach ($detailedCart as $item) {
+            if ($item['type'] === "Food" && is_numeric($item['stock_quantity'])) {
+                $stockStmt->execute([
+                    (int) $item['quantity'],
+                    $item['product_id'],
+                    (int) $item['quantity']
+                ]);
+
+                if ($stockStmt->rowCount() === 0) {
+                    throw new Exception("Not enough stock for product ID {$item['product_id']}");
+                }
+            }
+        }
+
+
 
         $pdo->commit();
 

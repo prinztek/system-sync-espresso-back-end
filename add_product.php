@@ -9,7 +9,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['role']) && $_SESSI
     $type = $_POST['type'] ?? '';
     $ingredients = $_POST['ingredients'] ?? '';
     $available = isset($_POST['available']) ? (int)$_POST['available'] : 0; // 0 = false, 1 = true
-    $stock_quantity = isset($_POST['stock_quantity']) ? (int)$_POST['stock_quantity'] : 0;
+    if ($type === 'Food') {
+        $stock_quantity = isset($_POST['stock_quantity']) && $_POST['stock_quantity'] !== ''
+            ? (int)$_POST['stock_quantity']
+            : null;
+
+        if ($stock_quantity === null) {
+            throw new Exception("Stock quantity is required for Food items.");
+        }
+    } else {
+        $stock_quantity = null;
+    }
 
     // JSON string Sizes 
     $sizes = isset($_POST['sizes']) ? json_decode($_POST['sizes'], true) : [];
