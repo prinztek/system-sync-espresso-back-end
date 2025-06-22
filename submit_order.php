@@ -125,3 +125,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     }
 }
+
+// response from submit order
+// {
+//     "success": true,
+//     "message": "Order placed successfully.",
+//     "order": {
+//         "id": "12",
+//         "name": "Prince James",
+//         "address": "b",
+//         "total_price": 2.5,
+//         "created_at": "2025-06-15 23:26:57",
+//         "cartItems": [
+//             {
+//                 "product_id": 1,
+//                 "product_name": "Espresso",
+//                 "size_id": 1,
+//                 "size_name": "Single Shot",
+//                 "quantity": 1,
+//                 "price": "2.50",
+//                 "total": 2.5
+//             }
+//         ]
+//     }
+// }

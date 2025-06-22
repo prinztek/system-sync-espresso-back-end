@@ -1,6 +1,6 @@
 <?php
-include './cors.php';
-include './config/db.php';
+include '../cors.php';
+include '../config/db.php';
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
     // get product details for admin

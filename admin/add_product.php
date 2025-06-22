@@ -1,6 +1,6 @@
 <?php
-include './cors.php';
-include './config/db.php';
+include '../cors.php';
+include '../config/db.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
@@ -30,18 +30,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['role']) && $_SESSI
         // Handle image upload
         $imagePath = "";
         if (!empty($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = "uploads/";
             $filename = basename($_FILES['image']['name']);
-            $targetPath = $uploadDir . uniqid() . "_" . $filename;
+            $newFileName = uniqid() . "_" . $filename;
 
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
-                $imagePath = "http://localhost/php-backend/" . $targetPath;
+            // Save to the parent /uploads/ directory from /admin/
+            $relativeUploadDir = "../uploads/";
+            $absolutePath = $relativeUploadDir . $newFileName;
+
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $absolutePath)) {
+                // Save correct public URL
+                $imagePath = "http://localhost/php-backend/uploads/" . $newFileName;
             } else {
                 http_response_code(500);
                 echo json_encode(["success" => false, "error" => "Failed to move uploaded file"]);
                 exit;
             }
         }
+
 
         // Insert into products
         $stmt = $pdo->prepare("

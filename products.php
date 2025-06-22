@@ -65,5 +65,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     echo json_encode(['error' => 'Route not found']);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
-}
+// [
+//   {
+//     "id": 1,
+//     "name": "Espresso",
+//     "description": "A strong, black coffee...",
+//     "type": "Drink",
+//     "ingredients": ["Espresso beans", "Water"],
+//     "image_url": "/src/assets/product_images/espresso.png",
+//     "available": true,
+//     "stock_quantity" : 0 or null
+//     "sizes": [
+//       {
+//         "id": 1,
+//         "name": "Single Shot",
+//         "price": 2.5
+//       },
+//       {
+//         "id": 2,
+//         "name": "Double Shot",
+//         "price": 3.5
+//       }
+//     ]
+//   }
+// ]

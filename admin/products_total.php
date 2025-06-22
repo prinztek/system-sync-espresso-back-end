@@ -1,7 +1,5 @@
 <?php
-// Include CORS headers to allow cross-origin requests
 include '../cors.php';
-// Include database configuration and connection
 include '../config/db.php';
 session_start();
 

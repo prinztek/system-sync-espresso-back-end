@@ -1,6 +1,6 @@
 <?php
-include './cors.php';
-include './config/db.php';
+include '../cors.php';
+include '../config/db.php';
 
 session_start();
 

@@ -1,6 +1,6 @@
 <?php
-include './cors.php';
-include './config/db.php';
+include '../cors.php';
+include '../config/db.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
@@ -16,8 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['role']) && $_SESSI
     $stock_quantity = intval($data['stock_quantity']);
 
     // Update product info
-    $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, type=?, ingredients=?, image_url=?, available=?, stock_quantity=? WHERE id=?");
-    $stmt->execute([$name, $description, $type, $ingredients, $image_url, $available, $stock_quantity, $product_id]);
+
+    // Dont set the stock quantity from null to 0 for type of Drink (skip stock quantity update if "Drink")
+    if ($type === "Drink") {
+        $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, type=?, ingredients=?, image_url=?, available=? WHERE id=?");
+        $stmt->execute([$name, $description, $type, $ingredients, $image_url, $available, $product_id]);
+    } else if ($type === "Food") {
+        $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, type=?, ingredients=?, image_url=?, available=?, stock_quantity=? WHERE id=?");
+        $stmt->execute([$name, $description, $type, $ingredients, $image_url, $available, $stock_quantity, $product_id]);
+    }
 
     // Update each size price
     foreach ($data['sizes'] as $size) {
